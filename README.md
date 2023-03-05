@@ -15,11 +15,12 @@ This is a fully functional calculator app built with Swiftui and following the M
 
 **`Preview`**
   
-<p>This is a quick preview of the calculator
-
+<p>This is a quick preview of the calculator</p>
+  
+<img width="479" alt="Screenshot 2023-03-05 at 3 26 33 pm" src="https://user-images.githubusercontent.com/96099265/222941720-815c0540-5eb2-4729-93aa-eaab69895661.png">
+  
 https://user-images.githubusercontent.com/96099265/222940855-ccf1e896-e7f6-4742-a519-a0ad3b309d69.mov
-
-
+  
 **`Getting Started`**
 <li>Clone the repository https://github.com/Jonothen099/Calculator.git
 <li>Open the CalculatorApp.xcodeproj file in Xcode
