@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ButtonComponent: View {
-	var vm: CalculatorLogicVM
+	@ObservedObject var vm: CalculatorLogicVM
 	var buttonTitle: CalculatorButton
 	var minWidth: CGFloat? = 60
 	var minHeight: CGFloat? = UIScreen.main.bounds.width > 380 ? 80 : 65
@@ -24,6 +24,8 @@ struct ButtonComponent: View {
 		}
 		
 	}
+	
+	
 	var body: some View {
 		VStack {
 			Button {
@@ -31,18 +33,24 @@ struct ButtonComponent: View {
 					case .allClear:
 						withAnimation(.easeIn) {
 							vm.deleteValue()
+							vm.alterColor(calButton: buttonTitle)
 						}
 					case .addition, .subtraction, .multiplication, .division:
 							withAnimation(.easeOut){
 								vm.getBothValues(calButton: buttonTitle)
+								vm.operatorTapped.toggle()
+								vm.alterColor(calButton: buttonTitle)
 							}
 					case .equal:
 						withAnimation(.easeOut){
 							vm.equalButtonTapped(calButton: buttonTitle)
+							vm.alterColor(calButton: buttonTitle)
+
 						}
 					default:
 						withAnimation(.easeOut) {
 							vm.gettingUserInputs(calButton: buttonTitle)
+							vm.alterColor(calButton: buttonTitle)
 						}
 						
 				}
@@ -57,6 +65,8 @@ struct ButtonComponent: View {
 					.frame(minWidth: minWidth, minHeight: minHeight)
 					.frame(maxWidth: maxWidth, maxHeight: maxHeight)
 					.background(isNotNumb(button: buttonTitle.title.rawValue) ? vm.buttonColors[buttonTitle.title.rawValue] : background)
+
+
 					.foregroundColor(.primary)
 					.cornerRadius(25)
 				

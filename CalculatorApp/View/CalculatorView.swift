@@ -73,7 +73,7 @@ struct CalculatorView: View {
 	}
 }
 
-struct SecondCalculatorView_Previews: PreviewProvider {
+struct CalculatorView_Previews: PreviewProvider {
 	static var previews: some View {
 		CalculatorView()
 	}

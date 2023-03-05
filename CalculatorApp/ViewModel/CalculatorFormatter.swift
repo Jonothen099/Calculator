@@ -15,6 +15,8 @@ class CalculatorFormatter{
 	@Published var displayValue: String = "0"
 	@Published var calHistory: String = "0"
 	@Published var historyButtonTapped = false
+	@Published var operatorTapped = false
+	var previousOperatorTitle: CalculatorButton?
 	var firstValue: String = ""
 	var secondValue: String = ""
 	var isFirstValueInput = false
@@ -61,6 +63,7 @@ class CalculatorFormatter{
 					// check if it is thousand to add comma
 					let thousandChecked = toDouble.thousandFormat
 					displayValue = thousandChecked
+				
 			}
 
 		}
@@ -209,18 +212,23 @@ class CalculatorFormatter{
 			
 				// remove one of the value when it is not empty and not just 1 digit
 			displayValue.removeLast()
+			currentValue = displayValue
+
 				// convert string display to int while removing the comma
 			if let displayToInt = Int(displayValue.removeComma) {
 				// this will remove the comma if it is less than 1k
 				if displayToInt < 1000 {
 					
 					displayValue = String(displayToInt)
+					currentValue = displayValue
+
 				//currentValue = displayValue
 				// anything less than a billion i wanna recheck if more than 1k i wanna add the comma back on
 				}else if displayToInt < 1000_000_000{
 					let displayToDouble = Double(displayToInt)
 					displayValue = displayToDouble.thousandFormat
-					
+					currentValue = displayValue
+
 				}
 			}
 		}else if displayValue.count == 1{
@@ -231,8 +239,8 @@ class CalculatorFormatter{
 			
 		}
 	}
-	// these dict determine the Colour of each calc button
-	let buttonColors = ["AC": Color.redAccentColor.opacity(0.8),
+	// these dict determine/map the Colour of each calc button
+	@Published var buttonColors = ["AC": Color.redAccentColor.opacity(0.8),
 						"+/-": Color.minAndPercentColor.opacity(0.6),
 						"%": Color.minAndPercentColor.opacity(0.6),
 						"÷": Color.yellowAccentColor,
@@ -240,7 +248,46 @@ class CalculatorFormatter{
 						"-": Color.yellowAccentColor ,
 						"+": Color.yellowAccentColor ,
 						"=": Color.equalColor ,
+						"selected": Color.blue // add a separate color for selected buttons
+
 	]
+	
+	//MARK: - This func will change the colour of the operators based on what tapped and revert when other button is tapped
+	func alterColor(calButton: CalculatorButton){
+			// Check if an operator button was previously tapped
+		if operatorTapped {
+				// If so, revert the color of the previously tapped operator button to yellow
+			if let prevOpTitle = previousOperatorTitle {
+				buttonColors[prevOpTitle.title.rawValue] = .yellowAccentColor
+			}
+			
+				// Check if the current button is an operator button
+			if let color = buttonColors[calButton.title.rawValue] {
+					// If so, change the color of the current button to a slightly opaque version of its original color
+				buttonColors[calButton.title.rawValue] = color.opacity(0.5)
+				previousOperatorTitle = calButton
+			} else {
+					// If not, change the current button to its original color
+				buttonColors[calButton.title.rawValue] = .yellowAccentColor
+			}
+			
+				// Reset the operatorTapped flag
+			operatorTapped = false
+		}
+		else {
+			//This block is executed if the current button is not an operator button. It simply sets the colour of the prev operator button to yellow
+			if let prevOpTitle = previousOperatorTitle {
+				buttonColors[prevOpTitle.title.rawValue] = .yellowAccentColor
+				previousOperatorTitle = nil
+			}
+		}
+		
+	}
+
+
+	
+
+
 	
 	
 }

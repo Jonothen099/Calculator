@@ -146,7 +146,6 @@ class CalculatorLogicVM: RealmLogic, ObservableObject{
 		// change the calculator state to completed state
 		isFirstValueInput.toggle()
 
-
 	}
 	
 
